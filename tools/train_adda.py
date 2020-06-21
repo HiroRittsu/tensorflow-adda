@@ -2,12 +2,10 @@ import logging
 import os
 import random
 from collections import deque
-from collections import OrderedDict
 
 import click
 import numpy as np
 import tensorflow as tf
-from tensorflow.contrib import slim
 from tqdm import tqdm
 
 import adda
@@ -54,14 +52,14 @@ def main(source, target, model, output,
         error = True
         logging.error(
             'Unexpected source dataset {} (should be in format dataset:split)'
-            .format(source))
+                .format(source))
     try:
         target_dataset_name, target_split_name = target.split(':')
     except ValueError:
         error = True
         logging.error(
             'Unexpected target dataset {} (should be in format dataset:split)'
-            .format(target))
+                .format(target))
     if error:
         raise click.Abort
 
@@ -157,12 +155,12 @@ def main(source, target, model, output,
         adversary_losses.append(adversary_loss_val)
         if i % display == 0:
             logging.info('{:20} Mapping: {:10.4f}     (avg: {:10.4f})'
-                        '    Adversary: {:10.4f}     (avg: {:10.4f})'
-                        .format('Iteration {}:'.format(i),
-                                mapping_loss_val,
-                                np.mean(mapping_losses),
-                                adversary_loss_val,
-                                np.mean(adversary_losses)))
+                         '    Adversary: {:10.4f}     (avg: {:10.4f})'
+                         .format('Iteration {}:'.format(i),
+                                 mapping_loss_val,
+                                 np.mean(mapping_losses),
+                                 adversary_loss_val,
+                                 np.mean(adversary_losses)))
         if stepsize is not None and (i + 1) % stepsize == 0:
             lr = sess.run(lr_var.assign(lr * 0.1))
             logging.info('Changed learning rate to {:.0e}'.format(lr))
