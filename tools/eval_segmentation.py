@@ -22,8 +22,10 @@ def preprocessing(inputs, model_fn):
         inputs = inputs[:, :, [2, 1, 0]]
     return inputs
 
+
 def remove_first_scope(name):
     return '/'.join(name.split('/')[1:])
+
 
 def collect_vars(scope, start=None, end=None, prepend_scope=None):
     vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=scope)
@@ -62,6 +64,7 @@ def count_intersection_and_union(predictions, gt, num_classes, ignore=[]):
         intersections[label] = np.sum(pred_map & gt_map)
         unions[label] = np.sum(pred_map | gt_map)
     return intersections, unions
+
 
 def iou_str(iou):
     result = []
@@ -131,7 +134,7 @@ def main(dataset, split, model, weights, gpu):
     ious = intersections / unions
     print(ious)
     print(np.mean(ious))
-    
+
 
 if __name__ == '__main__':
     main()

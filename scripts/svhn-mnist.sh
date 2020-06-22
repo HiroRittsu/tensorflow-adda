@@ -4,13 +4,13 @@
 set -e
 
 # train base model on svhn
-python3 tools/train.py svhn train lenet lenet_svhn \
-       --iterations 10000 \
-       --batch_size 128 \
-       --display 10 \
-       --lr 0.001 \
-       --snapshot 5000 \
-       --solver adam
+# python3 tools/train.py svhn train lenet lenet_svhn \
+#      --iterations 10000 \
+#      --batch_size 128 \
+#      --display 10 \
+#      --lr 0.001 \
+#      --snapshot 5000 \
+#      --solver adam
 
 # run adda svhn->mnist
 python3 tools/train_adda.py svhn:train mnist:train lenet adda_lenet_svhn_mnist \

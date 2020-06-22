@@ -1,14 +1,11 @@
 import logging
 import os
 import random
-import sys
 from collections import deque
-from collections import OrderedDict
 
 import click
 import numpy as np
 import tensorflow as tf
-from tensorflow.contrib import slim
 from tqdm import tqdm
 
 import adda
@@ -81,7 +78,7 @@ def main(dataset, split, model, output, gpu, iterations, batch_size, display,
             logging.info('    {:30} -> {:30}'.format(src, tgt.name))
         restorer = tf.train.Saver(var_list=var_dict)
         restorer.restore(sess, weights)
-        
+
     model_vars = adda.util.collect_vars(model)
     saver = tf.train.Saver(var_list=model_vars)
     output_dir = os.path.join('snapshot', output)
@@ -96,9 +93,9 @@ def main(dataset, split, model, output, gpu, iterations, batch_size, display,
         losses.append(loss_val)
         if i % display == 0:
             logging.info('{:20} {:10.4f}     (avg: {:10.4f})'
-                        .format('Iteration {}:'.format(i),
-                                loss_val,
-                                np.mean(losses)))
+                         .format('Iteration {}:'.format(i),
+                                 loss_val,
+                                 np.mean(losses)))
         if stepsize is not None and (i + 1) % stepsize == 0:
             lr = sess.run(lr_var.assign(lr * 0.1))
             logging.info('Changed learning rate to {:.0e}'.format(lr))

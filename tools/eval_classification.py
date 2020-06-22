@@ -1,14 +1,12 @@
 import logging
 import os
-import time
-from collections import OrderedDict
 
 import click
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 
-
+import adda
 
 
 def format_array(arr):
@@ -29,8 +27,6 @@ def main(dataset, split, model, weights, gpu):
         os.environ['CUDA_VISIBLE_DEVICES'] = gpu
     logging.info('Using GPU {}'.format(os.environ['CUDA_VISIBLE_DEVICES']))
 
-    dataset_name = dataset
-    split_name = split
     dataset = adda.data.get_dataset(dataset, shuffle=False)
     split = getattr(dataset, split)
     model_fn = adda.models.get_model_fn(model)
@@ -56,7 +52,7 @@ def main(dataset, split, model, weights, gpu):
 
     class_correct = np.zeros(dataset.num_classes, dtype=np.int32)
     class_counts = np.zeros(dataset.num_classes, dtype=np.int32)
-    for i in tqdm(range(len(split))):
+    for _ in tqdm(range(len(split))):
         predictions, gt = sess.run([net, label_batch])
         class_counts[gt[0]] += 1
         if predictions[0] == gt[0]:
